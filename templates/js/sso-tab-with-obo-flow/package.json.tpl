@@ -9,9 +9,8 @@
     "dependencies": {
         "@fluentui/react-components": "^9.55.1",
         "@microsoft/teams-js": "^2.31.1",
-        "@microsoft/teamsfx": "^3.0.0-alpha",
-        "@microsoft/teamsfx-react": "^4.0.0-alpha",
-        "axios": "^0.21.1",
+        "@microsoft/teamsfx": "^3.0.0",
+        "@microsoft/teamsfx-react": "^4.0.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.8.0"
@@ -20,12 +19,9 @@
         "@types/node": "^18.0.0",
         "@types/react": "^18.0.0",
         "@types/react-dom": "^18.0.0",
-        "@types/react-router-dom": "^5.3.3",
         "concurrently": "^8.2.2",
         "env-cmd": "^10.1.0",
-        "vite": "^5.4.2",
-        "@vitejs/plugin-basic-ssl": "^1.1.0",
-        "@vitejs/plugin-react": "^4.3.1"
+        "vite": "^5.4.2"
     },
     "scripts": {
         "dev:teamsfx": "concurrently \"npm run dev-tab:teamsfx\" \"npm run dev-api:teamsfx\"",
