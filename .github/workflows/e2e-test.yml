@@ -404,7 +404,7 @@ jobs:
 
             page=$((page+1))
           done
-
+          echo "-------------- step 1 ----------------"
           cases=`echo $jobs| jq -r '.[] | select(.name | contains("tests.ts")) | .name'`
 
           passed=0
@@ -417,6 +417,8 @@ jobs:
           mos_api_failed_lists=""
 
           emails="teamsfxqa@microsoft.com;"
+
+          echo "-------------- step 2 ----------------"
           while IFS= read -r case;
           do
             if [ -z "$case" ]; then
@@ -464,32 +466,40 @@ jobs:
               lable=""
               while IFS= read -r test;
               do
+                echo "-------------- step 3.1 ----------------"
                 name=`echo $test | jq -cr .fullTitle`
                 duration=`echo $test | jq -cr .duration`
+                echo "-------------- step 3.2 ----------------"
                 if [[ ! -z `echo $test | jq 'select(.pass==true)'` ]]; then
                   passed=$((passed+1))
+                  echo "-------------- step 3.2.0 ----------------"
                   label="<span style=\\\"background-color:#2aa198;color:white;font-weight:bold;\\\">PASSED</span>"
                 elif [[ ! -z `echo $test | jq 'select(.fail==true)'` ]]; then
                   failed=$((failed+1))
+                  echo "-------------- step 3.2.1 ----------------"
                   label="<span style=\\\"background-color: #dc322f;color:white;font-weight:bold;\\\">FAILED</span>"
                   if [[ ! -z "$email" && ! "$emails" == *"$email"* ]]; then
                     emails="$emails;$email;zhendr@microsoft.com;ccdevexperiencefc@microsoft.com"
                   fi
                 elif [[ ! -z `echo $test | jq 'select(.skipped==true)'` || ! -z `echo $test | jq 'select(.pending==true)'` ]]; then
+                  echo "-------------- step 3.2.2 ----------------"
                   skipped=$((skipped+1))
                   label="<span style=\\\"background-color: #b58900;color:white;font-weight:bold;\\\">SKIPPED</span>"
                 fi
-                
+                echo "-------------- step 3.3 ----------------"
                 row="<tr> <td style=\\\"text-align: left;\\\">$url</td> <td style=\\\"text-align: left;\\\">$name</td> <td style=\\\"text-align: center;\\\">$target_type</td> <td style=\\\"text-align: center;\\\">$label</td> <td style=\\\"text-align: center;\\\">$author</td> <td>$((duration/1000)) sec</td> </tr>"
                 if [[ ! -z `echo $test | jq 'select(.pass==true)'` ]]; then
+                  echo "-------------- step 3.3.0 ----------------"
                   passed_lists="$passed_lists $row"
                 elif [[ ! -z `echo $test | jq 'select(.fail==true)'` ]]; then
+                  echo "-------------- step 3.3.1 ----------------"
                   failed_lists="$failed_lists $row"
                   if [[ $is_mos_api_case == true ]]; then
                     has_mos_api_failure=true
                     mos_api_failed_lists="$mos_api_failed_lists $row"
                   fi
                 elif [[ ! -z `echo $test | jq 'select(.skipped==true)'` || ! -z `echo $test | jq 'select(.pending==true)'` ]]; then
+                  echo "-------------- step 3.3.2 ----------------"
                   skipped_lists="$skipped_lists $row"
                 fi
               done <<< $tests
@@ -498,6 +508,8 @@ jobs:
             fi
 
           done <<< $cases
+
+          echo "------ step 4 ------"
 
           body="Dashboard App: <a href=\\\"https:\/\/teams.microsoft.com\/l\/entity\/c439ae8d-3ab3-4efd-9223-87366d8c170c\/_djb2_msteams_prefix_1252604900?context=%7B%22channelId%22%3A%2219%3A79488ced607f4fbf8d8433e931cad176%40thread.tacv2%22%7D&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47\\\">Click Here to Open Dashboard App</a>  <table class=\\\"w3-table w3-striped w3-bordered\\\"> <tr> <th>PATH</th> <th>CASE</th> <th>TARGET TYPE</th> <th>STATUS</th> <th>AUTHOR</th> <th>DURATION</th> </tr> $failed_lists $skipped_lists $passed_lists </table> <br />"
 
@@ -509,14 +521,14 @@ jobs:
           else
             subject="[PASSED] $subject"
           fi
-   
+          echo "------ step 5 ------"
           mos_body=""
           mos_subject="";
           if [[ $has_mos_api_failure == true ]]; then
             mos_body="Dashboard App: <a href=\\\"https:\/\/teams.microsoft.com\/l\/entity\/c439ae8d-3ab3-4efd-9223-87366d8c170c\/_djb2_msteams_prefix_1252604900?context=%7B%22channelId%22%3A%2219%3A79488ced607f4fbf8d8433e931cad176%40thread.tacv2%22%7D&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47\\\">Click Here to Open Dashboard App</a>  <table class=\\\"w3-table w3-striped w3-bordered\\\"> <tr> <th>PATH</th> <th>CASE</th> <th>TARGET TYPE</th> <th>STATUS</th> <th>AUTHOR</th> <th>DURATION</th> </tr> $mos_api_failed_lists </table> <br />"
             mos_subject="[FAILED] TTK E2E MOS API Alert"
           fi
-
+          echo "------ step 6 ------"
           echo "body=$body" >> $GITHUB_OUTPUT
           echo "to=$emails" >> $GITHUB_OUTPUT
           echo "subject=$subject" >> $GITHUB_OUTPUT
