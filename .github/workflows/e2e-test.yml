@@ -195,6 +195,10 @@ jobs:
           which func
           func --version
 
+      - name: install libssl 1.1
+        run: |
+          sudo apt-get install libssl1.1
+
       - name: Setup .net
         uses: actions/setup-dotnet@v3
         with:
