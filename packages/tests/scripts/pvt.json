@@ -3,6 +3,11 @@
     "node-20": [
       "telemetry@open-vscode"
     ]
+  },
+  "ubuntu-latest": {
+    "node-20": [
+      "telemetry@open-vscode"
+    ]
   }
 }
 
