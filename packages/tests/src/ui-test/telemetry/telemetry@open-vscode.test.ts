@@ -12,16 +12,7 @@ import * as chai from "chai";
 import { it } from "../../utils/it";
 
 const TelemetryLogRegex = /\[.+\]\s\[DEBUG\]\sTelemTest\s-\s([\w\d-]+)\s{/g;
-const TelemetryNames = [
-  "vsc-configuration",
-  "show-what-is-new-notification",
-  "query-expfeature",
-  "open-v1-project",
-  "check-sideloading",
-  "quick-start",
-  "survey",
-  "walkthrough-build-intelligent-apps",
-];
+const TelemetryNames = ["vsc-configuration"];
 
 describe("telemetry", function () {
   this.timeout(Timeout.testCase);
