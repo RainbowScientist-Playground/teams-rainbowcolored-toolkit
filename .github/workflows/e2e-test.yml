@@ -197,8 +197,8 @@ jobs:
 
       - name: install libssl 1.1
         run: |
-          curl -O http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.22_amd64.deb
-          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.22_amd64.deb
+          echo AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME
+          echo M365_ACCOUNT_NAME: $M365_ACCOUNT_NAME
 
       - name: Setup .net
         uses: actions/setup-dotnet@v3
