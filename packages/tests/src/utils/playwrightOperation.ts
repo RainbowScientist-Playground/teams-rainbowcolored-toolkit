@@ -1933,7 +1933,7 @@ export async function validateStockUpdate(page: Page) {
 
 export async function validateTodoList(
   page: Page,
-  options?: { displayName?: string; appName: string }
+  options?: { displayName?: string; appName?: string }
 ) {
   try {
     console.log("start to verify todo list");
