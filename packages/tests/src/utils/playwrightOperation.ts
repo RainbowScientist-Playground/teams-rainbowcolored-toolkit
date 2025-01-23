@@ -3078,20 +3078,14 @@ export async function cleanupInstalledApp(page: Page, appName: string) {
   try {
     // clean up
     console.log("open app manage page");
-    try {
-      const appManagePage = await page?.waitForSelector(
-        "button[data-tid='channel-add-apps-button']"
-      );
-      await appManagePage?.click();
-    } catch (error) {
-      const appManagePage = await page?.waitForSelector(
-        "button[data-tid='chat-add-apps-button']"
-      );
-      await appManagePage?.click();
-    }
+    const appManagePage = await page?.waitForSelector(
+      "button[aria-label='Open Apps']"
+    );
+    await appManagePage?.click();
     await page.waitForTimeout(Timeout.shortTimeWait);
+
     const appManageBtn = await page?.waitForSelector(
-      "div[data-tid='extensibility-app-picker-right-rail-footer'] button[aria-label='Manage your apps']"
+      "button[aria-label='Manage apps']"
     );
     await appManageBtn?.click();
     await page.waitForTimeout(Timeout.shortTimeWait);
