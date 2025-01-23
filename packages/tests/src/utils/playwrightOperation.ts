@@ -3080,33 +3080,30 @@ export async function cleanupInstalledApp(page: Page, appName: string) {
   );
   try {
     // clean up
-    const homeTab = await tabCardContainer?.waitForSelector(
-      `button:has-text('${appName}')`
+    const appManagePage = await tabCardContainer?.waitForSelector(
+      "button[data-tid='chat-add-apps-button']"
     );
-    // right click to open context menu
-    await homeTab?.click({ button: "right" });
+    await appManagePage?.click();
+    await page.waitForTimeout(Timeout.shortTimeWait);
+    const appManageBtn = await page?.waitForSelector(
+      "div[data-tid='extensibility-app-picker-right-rail-footer'] button[aria-label='Manage your apps']"
+    );
+    await appManageBtn?.click();
+    await page.waitForTimeout(Timeout.shortTimeWait);
+    const appNameBtn = await page?.waitForSelector(
+      `div[data-tid='installed-app-item-title']:has-text('${appName}')`
+    );
+    await appNameBtn?.click({ button: "right" });
     await page.waitForTimeout(Timeout.shortTimeWait);
     const deleteBtn = await page?.waitForSelector(
-      "div[data-tid='data-tid-removeTab']"
+      "div[role='menuitem']:has-text('Remove')"
     );
     await deleteBtn?.click();
-    await page.waitForTimeout(Timeout.shortTimeLoading);
-    const confirmBtn = await page?.waitForSelector(
-      "button[id='tab-remove-btn']"
-    );
+    await page.waitForTimeout(Timeout.shortTimeWait);
+
+    const confirmBtn = await page?.waitForSelector("button:has-text('Remove')");
     await confirmBtn?.click();
     await page.waitForTimeout(Timeout.shortTimeWait);
-    try {
-      await page.waitForSelector(
-        "h3:has-text('There was a problem removing this tab')"
-      );
-      const dobuleConfirmBtn = await page.waitForSelector(
-        "button:has-text('Yes, remove tab')"
-      );
-      await dobuleConfirmBtn?.click();
-    } catch (error) {
-      console.log("no error message");
-    }
     console.log("cleanupInstalledApp successfully");
   } catch (error) {
     console.log("[skip] cleanupInstalledApp error");
@@ -3115,7 +3112,11 @@ export async function cleanupInstalledApp(page: Page, appName: string) {
   return tabCardContainer;
 }
 
-export async function validateMeeting(page: Page, name: string) {
+export async function validateMeeting(
+  page: Page,
+  name: string,
+  appName: string
+) {
   try {
     console.log("start to verify meeting");
     const frameElementHandle = await page.waitForSelector(
@@ -3126,7 +3127,7 @@ export async function validateMeeting(page: Page, name: string) {
     console.log("meeting tab loaded successfully");
 
     // clean up
-    await cleanupInstalledApp(page, "Home");
+    await cleanupInstalledApp(page, appName);
   } catch (error) {
     await page.screenshot({
       path: getPlaywrightScreenshotPath("error"),
