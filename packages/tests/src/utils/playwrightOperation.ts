@@ -3123,7 +3123,7 @@ export async function cleanupInstalledApp(page: Page, appName: string) {
     console.log("[skip] cleanupInstalledApp error");
     console.log(error);
   }
-  return tabCardContainer;
+  return;
 }
 
 export async function validateMeeting(
