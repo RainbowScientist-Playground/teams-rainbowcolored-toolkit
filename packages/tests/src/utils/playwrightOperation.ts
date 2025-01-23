@@ -3075,16 +3075,20 @@ export async function validateRetailDashboard(page: Page, tabName: string) {
 
 export async function cleanupInstalledApp(page: Page, appName: string) {
   console.log("start to cleanupInstalledApp");
-  const tabCardContainer = await page?.waitForSelector(
-    "div[data-tid='app-layout-area--header']"
-  );
   try {
     // clean up
     console.log("open app manage page");
-    const appManagePage = await tabCardContainer?.waitForSelector(
-      "button[data-tid='chat-add-apps-button']"
-    );
-    await appManagePage?.click();
+    try {
+      const appManagePage = await page?.waitForSelector(
+        "button[data-tid='channel-add-apps-button']"
+      );
+      await appManagePage?.click();
+    } catch (error) {
+      const appManagePage = await page?.waitForSelector(
+        "button[data-tid='chat-add-apps-button']"
+      );
+      await appManagePage?.click();
+    }
     await page.waitForTimeout(Timeout.shortTimeWait);
     const appManageBtn = await page?.waitForSelector(
       "div[data-tid='extensibility-app-picker-right-rail-footer'] button[aria-label='Manage your apps']"
