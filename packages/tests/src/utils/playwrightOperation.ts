@@ -3080,6 +3080,7 @@ export async function cleanupInstalledApp(page: Page, appName: string) {
   );
   try {
     // clean up
+    console.log("open app manage page");
     const appManagePage = await tabCardContainer?.waitForSelector(
       "button[data-tid='chat-add-apps-button']"
     );
@@ -3090,6 +3091,15 @@ export async function cleanupInstalledApp(page: Page, appName: string) {
     );
     await appManageBtn?.click();
     await page.waitForTimeout(Timeout.shortTimeWait);
+
+    // fliter app
+    console.log("filter app");
+    const searchInput = await page?.waitForSelector(
+      "input[data-tid='manage-apps-search-input']"
+    );
+    await searchInput?.fill(appName);
+
+    console.log("delete app");
     const appNameBtn = await page?.waitForSelector(
       `div[data-tid='installed-app-item-title']:has-text('${appName}')`
     );
