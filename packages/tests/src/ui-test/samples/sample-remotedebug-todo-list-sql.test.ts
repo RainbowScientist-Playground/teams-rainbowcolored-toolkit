@@ -124,7 +124,7 @@ class TodoListBackendTestCase extends CaseFactory {
     );
   }
   override async onValidate(page: Page): Promise<void> {
-    return await validateTodoList(page);
+    return await validateTodoList(page, { appName: "fxuiTodolidev" });
   }
 }
 

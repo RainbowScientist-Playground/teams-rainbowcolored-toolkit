@@ -90,7 +90,7 @@ class TodoListBackendTestCase extends CaseFactory {
     );
   }
   public override async onValidate(page: Page): Promise<void> {
-    return await validateTodoList(page);
+    return await validateTodoList(page, { appName: "fxuiTodoLilocal" });
   }
   public override async onReopenPage(
     sampledebugContext: SampledebugContext,

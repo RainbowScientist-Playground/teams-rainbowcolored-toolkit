@@ -1933,7 +1933,7 @@ export async function validateStockUpdate(page: Page) {
 
 export async function validateTodoList(
   page: Page,
-  options?: { displayName?: string }
+  options?: { displayName?: string; appName: string }
 ) {
   try {
     console.log("start to verify todo list");
@@ -1993,7 +1993,7 @@ export async function validateTodoList(
       console.log("debug finish!!!");
 
       // cleanup
-      await cleanupInstalledApp(page, "Todo List");
+      await cleanupInstalledApp(page, options?.appName || "");
     } catch (e: any) {
       console.log(`[Command not executed successfully] ${e.message}`);
       await page.screenshot({
