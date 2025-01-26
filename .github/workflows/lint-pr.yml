@@ -194,13 +194,9 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up GitHub CLI
-        uses: actions/setup-node@v3
+      - uses: sersoft-gmbh/setup-gh-cli-action@v2
         with:
-          node-version: '20'
-
-      - name: Install GitHub CLI
-        run: npm install -g @octokit/cli
+          version: stable
 
       - name: Get pull request context
         id: get-pr
