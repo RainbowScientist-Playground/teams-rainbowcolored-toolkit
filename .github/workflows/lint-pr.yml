@@ -246,7 +246,7 @@ jobs:
             const currentTarget = ${{ steps.get-pr.outputs.baseRefName }};
             const latestVSCRelease = '${{ steps.get-latest-release.outputs.latest_vsc_release }}'.trim();
             const latestVSRelease = '${{ steps.get-latest-release.outputs.latest_vs_release }}'.trim();
-            const prNumber = ${{ github.event.inputs.pr_number }};
+            const prNumber = '${{ github.event.inputs.pr_number }}'.trim();
             const prTitle = ${{ steps.get-pr.outputs.title }};
             const prAuthor = ${{ steps.get-pr.outputs.author }}.login;
             
