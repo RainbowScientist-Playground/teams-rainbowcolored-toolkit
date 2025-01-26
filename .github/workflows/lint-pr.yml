@@ -243,12 +243,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }} # Use a PAT with the required permissions
           script: |
-            const currentTarget = ${{ steps.get-pr.outputs.baseRefName }};
+            const currentTarget = '${{ steps.get-pr.outputs.baseRefName }}'.trim();
             const latestVSCRelease = '${{ steps.get-latest-release.outputs.latest_vsc_release }}'.trim();
             const latestVSRelease = '${{ steps.get-latest-release.outputs.latest_vs_release }}'.trim();
-            const prNumber = ${{ github.event.inputs.pr_number }};
-            const prTitle = ${{ steps.get-pr.outputs.title }};
-            const prAuthor = ${{ steps.get-pr.outputs.author }};
+            const prNumber = context.payload.inputs.pr_number;
+            const prTitle = '${{ steps.get-pr.outputs.title }}'.trim();
+            const prAuthor = '${{ steps.get-pr.outputs.author }}'.trim();
             console.log('---------', currentTarget, latestVSCRelease, latestVSRelease, prNumber, prTitle, prAuthor);
             
             let targetBranches = ['dev'];
