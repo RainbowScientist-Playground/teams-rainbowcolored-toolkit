@@ -1,0 +1,48 @@
+# Advanced Security Dependency Scanning v1
+# Scan for open source dependency vulnerabilities in your source code.
+- task: AdvancedSecurity-Dependency-Scanning@1
+  inputs:
+    directoryExclusionList: 'node_modules, dist, .git'
+
+# Teams Toolkit Configuration
+- task: TeamsToolkit-Setup@1
+  inputs:
+    projectType: 'TeamsApp'
+    template: 'Tab'
+    appName: 'MyTeamsApp'
+    appDescription: 'A sample Teams app'
+    appIconPath: 'path/to/app-icon.png'
+    appPkgPath: 'path/to/app-pkg.zip'
+    appDomain: 'com.example.myteamsapp'
+    appPermissions: 'identity, chat, files'
+    appScopes: 'user.read, mail.read'
+    appEnvironment: 'development'
+    appTenantId: 'a5a7830f-2916-4142-b15f-f9305a8c40f0'
+    appClientId: 'your-client-id'
+    appClientSecret: 'your-client-secret'
+    artifactsRepo: 'https://github.com/microsoft/MSBuildSdks'
+
+# Dependabot Configuration
+# This configuration ensures that dependencies are checked and updated regularly.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps"
+
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps"
